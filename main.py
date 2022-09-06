@@ -39,7 +39,7 @@ class VkBot:
                 if user.vk_id == admin_id:
                     if text == '!кик':
                         self.vk_session.method('messages.removeChatUser', {
-                            'user_id': fwd['from_id'], #event.user_id,
+                            'user_id': fwd['from_id'],
                             'chat_id': msg['peer_id'] - 2000000000
                         })
                     elif text == '!пред' or text == '! пред':
@@ -67,37 +67,67 @@ class VkBot:
 
                     elif text == '!списокпредовочистить' or text == '! списокпредовочистить':
                         fwd_user = utils.get_user_by_id(fwd['from_id'])
-                        fwd_user.warns = 0
-                        fwd_user.save()
+                        if fwd_user.warns > 0:
+                            fwd_user.warns = 0
+                            fwd_user.save()
 
-                        user_name = self.vk_session.method('users.get', {
-                            'user_id': fwd_user.vk_id
-                        })[0]['first_name']
-                        print(user_name)
+                            user_name = self.vk_session.method('users.get', {
+                                'user_id': fwd_user.vk_id
+                            })[0]['first_name']
+                            print(user_name)
 
-                        self.vk_session.method('messages.send', {
-                            'chat_id': msg['peer_id'] - 2000000000,
-                            'message': f'{user_name}, все предупреждения сняты! '
-                                       f'\n Всего предупреждений: {fwd_user.warns} / 5',
-                            'random_id': 0
-                        })
+                            self.vk_session.method('messages.send', {
+                                'chat_id': msg['peer_id'] - 2000000000,
+                                'message': f'{user_name}, все предупреждения сняты! '
+                                           f'\n Всего предупреждений: {fwd_user.warns} / 5',
+                                'random_id': 0
+                            })
+
+                        else:
+                            user_name = self.vk_session.method('users.get', {
+                                'user_id': fwd_user.vk_id
+                            })[0]['first_name']
+                            print(user_name)
+
+                            self.vk_session.method('messages.send', {
+                                'chat_id': msg['peer_id'] - 2000000000,
+                                'message': f'{user_name}, ахахахах, админ лол, у него и так нет предов '
+                                           f'\n Ахахахахахахахах',
+                                'random_id': 0
+                            })
 
                     elif text == '!распред' or text == '! распред':
                         fwd_user = utils.get_user_by_id(fwd['from_id'])
-                        fwd_user.warns -= 1
-                        fwd_user.save()
+                        if fwd_user.warns > 0:
+                            fwd_user.warns -= 1
+                            fwd_user.save()
 
-                        user_name = self.vk_session.method('users.get', {
-                            'user_id': fwd_user.vk_id
-                        })[0]['first_name']
-                        print(user_name)
+                            user_name = self.vk_session.method('users.get', {
+                                'user_id': fwd_user.vk_id
+                            })[0]['first_name']
+                            print(user_name)
 
-                        self.vk_session.method('messages.send', {
-                            'chat_id': msg['peer_id'] - 2000000000,
-                            'message': f'{user_name}, предупреждение снято! '
-                                       f'\n Всего предупреждений: {fwd_user.warns} / 5',
-                            'random_id': 0
-                        })
+                            self.vk_session.method('messages.send', {
+                                'chat_id': msg['peer_id'] - 2000000000,
+                                'message': f'{user_name}, предупреждение снято! '
+                                           f'\n Всего предупреждений: {fwd_user.warns} / 5',
+                                'random_id': 0
+                            })
+
+                        else:
+                            user_name = self.vk_session.method('users.get', {
+                                'user_id': fwd_user.vk_id
+                            })[0]['first_name']
+                            print(user_name)
+
+                            self.vk_session.method('messages.send', {
+                                'chat_id': msg['peer_id'] - 2000000000,
+                                'message': f'{user_name}, админ лол, ахахахахахахахахахах, у него нет предов '
+                                           f'\n Ахахахахахахахахахахахахахахахахахахахахахахах'
+                                           f'ахахахахахахахахахахах ; ахахахахахахахахахахах ; '
+                                           f'ахахахахахахахахахахах ; ахахахахахахахахахахах',
+                                'random_id': 0
+                            })
 
                 print(user_id, text, fwd)
 
